@@ -1,13 +1,17 @@
-from yahoo_finance import *
 from datetime import *
+import matplotlib.pyplot as plt
+from matplotlib import style
+import pandas as pd
+import pandas_datareader as web
+
 
 def RSI(data):
     AVG_gain = 0
     AVG_loss = 0
 
-    for info in data:
-        open = float(info['Open'])
-        close = float(info['Close'])
+    for info in data.values:
+        open = float(info[0])
+        close = float(info[3])
         gainloss = close-open
         if gainloss > 0:
             AVG_gain += gainloss
@@ -16,18 +20,34 @@ def RSI(data):
 
 
     RS = AVG_gain/AVG_loss
-
     RSI = 100 - (100/(1+RS))
-    print(RSI)
-    return
+
+    return RSI
 
 
 def main():
     symbol = input("Write symbol of the stock: ")
     timeframe = int(input("Choose dayrange: "))
-    share = Share(symbol)
-    date = (datetime.today() - timedelta(days=timeframe)).strftime('%Y-%m-%d')
-    data = share.get_historical(date, datetime.today().strftime('%Y-%m-%d'))
-    RSI(data)
+    end = datetime.today()
+    start = datetime.today()
+    RSIlist = []
+    dates = []
+    i = 0
+
+    while i < timeframe:
+        start -= timedelta(days=1)
+        if start.weekday() > 4:
+            continue
+
+        else:
+            dates.append(start)
+            i += 1
+
+
+    for i in range(0, timeframe):
+        df = web.DataReader(symbol, "yahoo", start-timedelta(days=i), end - timedelta(days=i))
+        RSIlist.append(RSI(df))
+    plt.plot(dates, RSIlist)
+    plt.show()
 
 main()
