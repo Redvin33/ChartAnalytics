@@ -42,7 +42,9 @@ def main():
         else:
             dates.append(start)
             i += 1
-    print("Git testi")
+    print("Git testing")
+
+
 
     for i in range(0, timeframe):
         df = web.DataReader(symbol, "yahoo", start-timedelta(days=i), end - timedelta(days=i))
