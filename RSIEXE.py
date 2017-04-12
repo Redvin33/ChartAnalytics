@@ -19,7 +19,6 @@ def RSI(data):
         elif gainloss < 0:
             AVG_loss -= gainloss
 
-
     RS = AVG_gain/AVG_loss
     RSI = 100 - (100/(1+RS))
 
