@@ -42,8 +42,6 @@ def main():
         else:
             dates.append(start)
             i += 1
-    print("Git testing")
-
 
 
     for i in range(0, timeframe):
