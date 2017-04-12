@@ -4,7 +4,8 @@ from matplotlib import style
 import pandas as pd
 import pandas_datareader as web
 
-
+#counts RSI for specific timeframe and date more info from RSI
+#link: http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:relative_strength_index_rsi
 def RSI(data):
     AVG_gain = 0
     AVG_loss = 0
@@ -24,6 +25,20 @@ def RSI(data):
 
     return RSI
 
+#Eliminates weekends because theyre not business days
+def weekendEliminator(end, timeframe):
+    i = 0
+    while i < timeframe:
+        end -= timedelta(days=1)
+        print(end)
+        if end.weekday() > 4:
+            continue
+
+        else:
+            i += 1
+    return end
+
+
 
 def main():
     symbol = input("Write symbol of the stock: ")
@@ -34,6 +49,7 @@ def main():
     dates = []
     i = 0
 
+    #Creates recent business days according to timeframe and adds them to list
     while i < timeframe:
         start -= timedelta(days=1)
         if start.weekday() > 4:
@@ -43,16 +59,17 @@ def main():
             dates.append(start)
             i += 1
 
-
-
+    #counts RSI for specific day and adds it to RSIlist
     for i in range(0, timeframe):
+        date = end-timedelta(days=timeframe -i)
         try:
-            df = web.DataReader(symbol, "yahoo", start-timedelta(days=i), end - timedelta(days=i))
+            df = web.DataReader(symbol, "yahoo", weekendEliminator(date, timeframe) , date)
+
         except:
             try:
-                df = web.DataReader(symbol, "google", start-timedelta(days=i), end - timedelta(days=i))
+                df = web.DataReader(symbol, "google", weekendEliminator(date, timeframe) , date)
             except:
-                df = web.DataReader(symbol, "fred", start-timedelta(days=i), end - timedelta(days=i))
+                df = web.DataReader(symbol, "fred", weekendEliminator(date, timeframe) , date)
         RSIlist.append(RSI(df))
     plt.plot(dates, RSIlist)
     plt.show()
