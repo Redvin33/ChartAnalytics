@@ -46,7 +46,13 @@ def main():
 
 
     for i in range(0, timeframe):
-        df = web.DataReader(symbol, "yahoo", start-timedelta(days=i), end - timedelta(days=i))
+        try:
+            df = web.DataReader(symbol, "yahoo", start-timedelta(days=i), end - timedelta(days=i))
+        except:
+            try:
+                df = web.DataReader(symbol, "google", start-timedelta(days=i), end - timedelta(days=i))
+            except:
+                df = web.DataReader(symbol, "fred", start-timedelta(days=i), end - timedelta(days=i))
         RSIlist.append(RSI(df))
     plt.plot(dates, RSIlist)
     plt.show()
