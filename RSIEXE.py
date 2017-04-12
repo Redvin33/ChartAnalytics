@@ -44,6 +44,7 @@ def main():
             i += 1
 
 
+
     for i in range(0, timeframe):
         df = web.DataReader(symbol, "yahoo", start-timedelta(days=i), end - timedelta(days=i))
         RSIlist.append(RSI(df))
