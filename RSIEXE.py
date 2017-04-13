@@ -70,6 +70,7 @@ def main():
             i += 1
     print(len(dates))
     #gets the required course history
+
     try:
         df = web.DataReader(symbol, "yahoo",weekendEliminator(end, 2*timeframe+1), end)
 
