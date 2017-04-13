@@ -58,18 +58,23 @@ def main():
             dates.append(start)
             i += 1
 
+
+    try:
+        df = web.DataReader(symbol, "yahoo",weekendEliminator(end, 2*timeframe), end)
+
+    except:
+        try:
+            df = web.DataReader(symbol, "google", weekendEliminator(end, 2*timeframe), end)
+        except:
+            df = web.DataReader(symbol, "fred", weekendEliminator(end, 2*timeframe), end)
+
+
     #counts RSI for specific day and adds it to RSIlist
     for i in range(0, timeframe):
-        date = end-timedelta(days=timeframe -i)
-        try:
-            df = web.DataReader(symbol, "yahoo", weekendEliminator(date, timeframe) , date)
-
-        except:
-            try:
-                df = web.DataReader(symbol, "google", weekendEliminator(date, timeframe) , date)
-            except:
-                df = web.DataReader(symbol, "fred", weekendEliminator(date, timeframe) , date)
-        RSIlist.append(RSI(df))
+        ending = end - timedelta(days=timeframe-i)
+        start = weekendEliminator(ending, timeframe)
+        period = df[start:ending]
+        RSIlist.append(RSI(period))
     plt.plot(dates, RSIlist)
     plt.show()
 
