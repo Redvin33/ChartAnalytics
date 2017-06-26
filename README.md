@@ -10,10 +10,11 @@ Program works by inputting symbol of the stock and choosing dayrange for RSI cal
 
 # Screenshots
 
- align="center">
-  <img src="cocacola.jpg" width="350"/>
+14-day RSI:s for Coca Cola and CBS.
+
+  <img src="cocacola.jpg"/>
   <img src="CBS.jpg" />
-</p>
+
 
 
 
